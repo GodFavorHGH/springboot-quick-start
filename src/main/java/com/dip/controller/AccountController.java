@@ -63,6 +63,7 @@ public class AccountController {
 		List<Account> accounts = accountService.getAccountListByType((List)queryMap.get("acTypes"));
 		Result<List<Account>> res = Result.success();
 		res.setData(accounts);
+		System.out.println("===");
 		return res;
 	}
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dip.mapper.AccountMapper">
+	
+	<insert id="addEUserAccount" parameterType="Account">
+        insert into eaccount
+        	(userid, acno, acname, actype, acstate) 
+       	values 
+        	(#{userId}, #{acNo}, #{acName}, #{acType}, #{acState})
+    </insert>
+    
+    <resultMap type="Account" id="getAccountInfoWithEUserRes">
+    	<id column="id" property="id" javaType="int"/>
+       	<id column="userid" property="userId" javaType="int"/>
+        <result column="acNo" property="acNo"/>
+        <result column="acname" property="acName"/>
+        <result column="actype" property="acType"/>
+        <result column="acstate" property="acState"/>
+        <collection property="user" ofType="EUser" column="id">
+	        <id column="id" property="id" javaType="int"/>
+	        <result column="name" property="name"/>
+	        <result column="phone" property="phone"/>
+	        <result column="password" property="password"/>
+	        <result column="idno" property="idNo"/>
+	        <result column="idtype" property="idType" javaType="com.dip.constants.IdType"/>
+	        <result column="createtime" property="createTime"/>
+	        <result column="updatetime" property="updateTime"/>
+	        <result column="status" property="status"/>
+	        <collection property="acList" javaType="java.util.List" ofType="Account">
+                <id column="id" property="id" javaType="int"/>
+		       	<id column="userid" property="userId" javaType="int"/>
+		        <result column="acNo" property="acNo"/>
+		        <result column="acname" property="acName"/>
+		        <result column="actype" property="acType"/>
+		        <result column="acstate" property="acState"/>
+            </collection>
+        </collection>
+    </resultMap>
+    
+    <select id="getAccountInfoWithEUser" resultMap="getAccountInfoWithEUserRes" parameterType="int">
+    	select a.*,b.* 
+    	from euser a,eaccount b 
+    	where a.id=b.userid and b.id=#{id}
+    </select>
+    
+    <resultMap id="getAccountListByTypeRes" type="Account">
+    	<id column="id" property="id" javaType="int"/>
+       	<id column="userid" property="userId" javaType="int"/>
+        <result column="acNo" property="acNo"/>
+        <result column="acname" property="acName"/>
+        <result column="actype" property="acType"/>
+        <result column="acstate" property="acState"/>
+        
+    </resultMap>
+    <select id="getAccountListByType" resultMap="getAccountListByTypeRes">
+    	select * from eaccount
+    	where actype in
+    	<foreach item="item" index="index" collection="acTypes" open="(" separator="," close=")">
+    		#{item}
+    	</foreach>
+    </select>
+</mapper>
