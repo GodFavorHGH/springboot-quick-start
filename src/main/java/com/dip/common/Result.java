@@ -3,6 +3,7 @@ package com.dip.common;
 import java.io.Serializable;
 
 import com.dip.constants.ResultCode;
+import com.dip.exception.BaseErrorInfo;
 
 /**
  * @author 98285
