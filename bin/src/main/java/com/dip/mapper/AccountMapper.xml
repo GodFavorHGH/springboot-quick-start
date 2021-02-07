@@ -52,7 +52,6 @@
         <result column="acname" property="acName"/>
         <result column="actype" property="acType"/>
         <result column="acstate" property="acState"/>
-        
     </resultMap>
     <select id="getAccountListByType" resultMap="getAccountListByTypeRes">
     	select * from eaccount
@@ -61,4 +60,84 @@
     		#{item}
     	</foreach>
     </select>
+    
+    <insert id="addBatch">
+    	insert into eaccount
+    	(userid, acno, acname, actype, acstate)
+    	values
+    	<foreach collection="accounts" item="account" separator=",">
+    		(#{account.userId}, #{account.acNo}, #{account.acName}, #{account.acType}, 'N')
+    	</foreach>
+    </insert>
+    
+    <resultMap type="Account" id="getAcListByUserIdRes">
+    	<id column="id" property="id" javaType="int"/>
+       	<id column="userid" property="userId" javaType="int"/>
+        <result column="acNo" property="acNo"/>
+        <result column="acname" property="acName"/>
+        <result column="actype" property="acType"/>
+        <result column="acstate" property="acState"/>
+    </resultMap>
+    <select id="getAcListByUserId" resultMap="getAcListByUserIdRes" parameterType="int">
+    	select * from eaccount where userid=#{id}
+    </select>
+    
+    <select id="paginationQuery" resultMap="getAcListByUserIdRes" parameterType="Map">
+    	select * from eaccount limit #{startIndex}, #{pageSize}
+    </select>
+    
+    <update id="updateBatch" parameterType="java.util.List">
+        update eaccount
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="id=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    when id=#{account.id} then '1'
+                </foreach>
+            </trim>
+            <trim prefix="userid=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    <if test="account.userId != null">
+                        when id=#{account.id} then #{account.userId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="acno=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    <if test="account.acNo != null">
+                        when id=#{account.id} then #{account.acNo}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="acname=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    <if test="account.acName != null">
+                        when id=#{account.id} then #{account.acName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="actype=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    <if test="account.acType != null">
+                        when id=#{account.id} then #{account.acType}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="acstate=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    <if test="account.acState != null">
+                        when id=#{account.id} then #{account.acState}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="updatetime=case" suffix="end,">
+                <foreach collection="accounts" item="account" index="index">
+                    when id=#{account.id} then current_timestamp
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="" separator="or" item="account" index="index">
+            id=#{account.id}
+        </foreach>
+    </update>
 </mapper>

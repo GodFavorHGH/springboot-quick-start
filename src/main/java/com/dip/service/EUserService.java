@@ -14,4 +14,6 @@ public interface EUserService {
 	int updateEUser(Map updateMap);
 	
 	EUser getEUserInfoWithAccount(int id);
+	
+	EUser getEUserByLoginInfo(Map loginData);
 }

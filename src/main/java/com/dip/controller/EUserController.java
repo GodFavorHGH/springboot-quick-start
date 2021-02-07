@@ -1,8 +1,5 @@
 package com.dip.controller;
 
-import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +13,7 @@ import com.dip.constants.IdType;
 import com.dip.constants.ResultCode;
 import com.dip.domain.concrete.EUser;
 import com.dip.service.EUserService;
+import com.dip.service.RuleService;
 import com.dip.utils.DataConvertUtil;
 
 @RestController
@@ -25,6 +23,9 @@ public class EUserController {
 
 	@Autowired
 	private EUserService euserService;
+	
+	@Autowired
+	private RuleService ruleService;
 	
 	@RequestMapping("/register")
 	public Result register(@RequestBody String params) {
@@ -40,10 +41,13 @@ public class EUserController {
 		return res;
 	}
 	
-	@RequestMapping("/getUser")
-	public Result getUser(@RequestBody String params) {
-		Map insertData = DataConvertUtil.convertJsonToMap(params);
-		EUser user = euserService.getEUserInfoWithAccount((Integer)insertData.get("id"));
+	@RequestMapping("/login")
+	public Result doLogin(@RequestBody String params) {
+		Map loginData = DataConvertUtil.convertJsonToMap(params);
+		EUser user = euserService.getEUserByLoginInfo(loginData);
+		if (user==null) {
+			return Result.failure(ResultCode.FAILURE.getCode(), "用户不存在!");
+		}
 		Result<EUser> res = Result.success();
 		res.setData(user);
 		return res;

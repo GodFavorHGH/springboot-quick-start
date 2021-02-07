@@ -106,4 +106,10 @@
     	where a.id=b.userid and a.id=#{id}
     </select>
     
+    <select id="getEUserByLoginInfo" resultMap="getEUserInfoWithAccountRes" parameterType="Map">
+    	select a.*,b.* 
+    	from euser a,eaccount b 
+    	where a.id=b.userid and a.phone=#{phone} and a.password=#{password}
+    </select>
+    
 </mapper>

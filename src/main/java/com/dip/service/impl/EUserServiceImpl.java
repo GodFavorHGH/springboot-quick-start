@@ -40,4 +40,10 @@ public class EUserServiceImpl implements EUserService {
 		return euserMapper.getEUserInfoWithAccount(id);
 	}
 
+	@Override
+	public EUser getEUserByLoginInfo(Map loginData) {
+		// TODO Auto-generated method stub
+		return euserMapper.getEUserByLoginInfo(loginData);
+	}
+
 }
