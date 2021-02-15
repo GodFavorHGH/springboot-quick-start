@@ -7,13 +7,15 @@ import com.dip.domain.concrete.EUser;
 
 public interface EUserService {
 
-	int registerEUser(EUser user);
-	
-	List<EUser> listAllEUser(Map queryMap);
-	
-	int updateEUser(Map updateMap);
-	
-	EUser getEUserInfoWithAccount(int id);
-	
-	EUser getEUserByLoginInfo(Map loginData);
+    int registerEUser(EUser user);
+
+    List<EUser> listAllEUser(Map queryMap);
+
+    int updateEUser(Map updateMap);
+
+    EUser getEUserInfoWithAccount(int id);
+
+    EUser getEUserByLoginInfo(String phone, String password);
+
+    int updateByEUser(EUser user);
 }

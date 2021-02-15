@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dip.mapper.SystemCachedDataMapper">
+    <resultMap type="Menu" id="getFirstLevelMenuListRes">
+        <result column="id" property="id"/>
+        <result column="parentId" property="parentId"/>
+        <result column="menuId" property="menuId"/>
+        <result column="menuName" property="menuName"/>
+        <result column="status" property="status"/>
+        <result column="isParent" property="isParent"/>
+        <result column="menuLevel" property="menuLevel"/>
+        <collection property="childList" ofType="Menu" column="menuId" select="getSecondLevelMenuList">
+        </collection>
+    </resultMap>
+    <select id="getMenuTreeList" parameterType="Map" resultMap="getFirstLevelMenuListRes">
+        select * from menu where parentid=#{parentId} and menulevel=#{menuLevel}
+    </select>
+
+    <!-- 查询二级菜单列表 -->
+    <resultMap type="Menu" id="getSecondLevelMenuListRes">
+        <result column="id" property="id"/>
+        <result column="parentId" property="parentId"/>
+        <result column="menuId" property="menuId"/>
+        <result column="menuName" property="menuName"/>
+        <result column="status" property="status"/>
+        <result column="isParent" property="isParent"/>
+        <result column="menuLevel" property="menuLevel"/>
+        <collection property="childList" ofType="Menu" column="menuId" select="getThirdLevelMenuList">
+        </collection>
+    </resultMap>
+    <select id="getSecondLevelMenuList" parameterType="java.lang.String" resultMap="getSecondLevelMenuListRes">
+        select b.* from menu a left join menu b on a.menuid=b.parentid where b.parentid=#{menuId}
+    </select>
+
+    <!-- 查询三级菜单列表 -->
+    <resultMap type="Menu" id="getThirdLevelMenuListRes">
+        <result column="id" property="id"/>
+        <result column="parentId" property="parentId"/>
+        <result column="menuId" property="menuId"/>
+        <result column="menuName" property="menuName"/>
+        <result column="status" property="status"/>
+        <result column="isParent" property="isParent"/>
+        <result column="menuLevel" property="menuLevel"/>
+    </resultMap>
+    <select id="getThirdLevelMenuList" parameterType="java.lang.String" resultMap="getThirdLevelMenuListRes">
+        select b.* from menu a left join menu b on a.menuid=b.parentid where b.parentid=#{menuId}
+    </select>
+    
+    <resultMap type="Map" id="loadTranscodesRes">
+    	<result column="prdid" property="PrdId"/>
+    	<result column="transcode" property="TransCode"/>
+    </resultMap>
+    <select id="loadTranscodes" resultMap="loadTranscodesRes">
+    	select n.prdid,n.transcode from product t,producttrs n where t.prdid=t.prdid
+    </select>
+</mapper>

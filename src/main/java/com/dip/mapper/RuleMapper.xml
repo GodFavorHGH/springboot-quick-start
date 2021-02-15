@@ -2,14 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dip.mapper.AccountMapper">
-	<resultMap type="Rule" id="getRootRuleRes">
+<mapper namespace="com.dip.mapper.RuleMapper">
+    <resultMap type="Rule" id="getRootRuleRes">
         <result column="ruletype" property="ruleType"/>
         <result column="usertype" property="userType"/>
         <result column="ruletype" property="ruleType"/>
         <result column="ruledef" property="ruleDef"/>
         <result column="namespace" property="nameSpace"/>
-	</resultMap>
-	<select id="getRootRule" resultMap="getRootRuleRes">
-	</select>
+    </resultMap>
+    <select id="getRootRule" resultMap="getRootRuleRes">
+        select * from rule where ruleid='root' and usertype='1' and ruletype='MenuTreeDef'
+    </select>
 </mapper>

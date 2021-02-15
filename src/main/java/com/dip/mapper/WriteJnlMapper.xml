@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dip.mapper.WriteJnlMapper">
+	
+	<insert id="writeJnl" parameterType="Map">
+		insert into ejnl
+		(
+		<if test="UserId!=null and UserId!=''">
+		userid, 
+		</if>
+		transcode, returncode, returnmsg, localaddr, remoteaddr, transdate, localname)
+		values
+		(
+		<if test="UserId!=null and UserId!=''">
+		#{UserId},
+		</if>
+		#{TransCode},#{ReturnCode},#{ReturnMsg},#{LocalAddr},#{RemoteAddr},#{TransDate},#{LocalName})
+	</insert>
+
+</mapper>

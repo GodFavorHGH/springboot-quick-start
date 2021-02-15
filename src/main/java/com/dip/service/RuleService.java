@@ -4,6 +4,6 @@ import com.dip.domain.concrete.Rule;
 
 public interface RuleService {
 
-	Rule getRootRule();
-	
+    Rule getRootRule();
+
 }

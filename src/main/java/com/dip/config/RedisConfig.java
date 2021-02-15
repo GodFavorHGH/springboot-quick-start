@@ -1,6 +1,7 @@
 package com.dip.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -8,13 +9,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * @author 98285
- *
  */
+//@Configuration
 public class RedisConfig {
 
-	@Bean
-	public RedisTemplate<String,String> redisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String,String> redisTemplate=new RedisTemplate<>();
+    @Bean
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         redisTemplate.setConnectionFactory(factory);
         //key序列化
@@ -27,5 +28,5 @@ public class RedisConfig {
         redisTemplate.setHashValueSerializer(redisSerializer);
         return redisTemplate;
     }
-	
+
 }

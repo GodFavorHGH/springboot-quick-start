@@ -6,25 +6,33 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 98285
- *
  */
-@Service
-@SuppressWarnings({"rawtypes","unchecked","unused"})
+@Component
+@SuppressWarnings({"rawtypes", "unchecked", "unused"})
 public class RedisUtils {
 
-	@Autowired
-	private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
+    @Bean
+    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
+    	RedisTemplate redisTemplate = new RedisTemplate();
+    	redisTemplate.setConnectionFactory(factory);
+    	return redisTemplate;
+    }
+    
     private static double size = Math.pow(2, 32);
 
 
@@ -32,7 +40,7 @@ public class RedisUtils {
      * 写入缓存
      *
      * @param key
-     * @param offset   位 8Bit=1Byte
+     * @param offset 位 8Bit=1Byte
      * @return
      */
     public boolean setBit(String key, long offset, boolean isShow) {
@@ -266,12 +274,12 @@ public class RedisUtils {
     /**
      * 有序集合获取排名
      *
-     * @param key 集合名称
+     * @param key   集合名称
      * @param value 值
      */
     public Long zRank(String key, Object value) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        return zset.rank(key,value);
+        return zset.rank(key, value);
     }
 
 
@@ -280,9 +288,9 @@ public class RedisUtils {
      *
      * @param key
      */
-    public Set<ZSetOperations.TypedTuple<Object>> zRankWithScore(String key, long start,long end) {
+    public Set<ZSetOperations.TypedTuple<Object>> zRankWithScore(String key, long start, long end) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<Object>> ret = zset.rangeWithScores(key,start,end);
+        Set<ZSetOperations.TypedTuple<Object>> ret = zset.rangeWithScores(key, start, end);
         return ret;
     }
 
@@ -294,7 +302,7 @@ public class RedisUtils {
      */
     public Double zSetScore(String key, Object value) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        return zset.score(key,value);
+        return zset.score(key, value);
     }
 
 
@@ -316,9 +324,9 @@ public class RedisUtils {
      *
      * @param key
      */
-    public Set<ZSetOperations.TypedTuple<Object>> reverseZRankWithScore(String key, long start,long end) {
+    public Set<ZSetOperations.TypedTuple<Object>> reverseZRankWithScore(String key, long start, long end) {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
-        Set<ZSetOperations.TypedTuple<Object>> ret = zset.reverseRangeByScoreWithScores(key,start,end);
+        Set<ZSetOperations.TypedTuple<Object>> ret = zset.reverseRangeByScoreWithScores(key, start, end);
         return ret;
     }
 
@@ -332,5 +340,5 @@ public class RedisUtils {
         Set<ZSetOperations.TypedTuple<Object>> ret = zset.reverseRangeWithScores(key, start, end);
         return ret;
     }
-	
+
 }

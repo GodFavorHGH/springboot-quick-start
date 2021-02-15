@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dip.mapper.EBillMapper">
+
+    <insert id="addEBill" parameterType="EBill">
+        insert into ebill
+        (userid,title,iotype,paytype,content,transdate,recorddate)
+        values
+        (#{userId},#{title},#{ioType},#{payType},#{content},#{transDate},#{recordDate})
+    </insert>
+
+    <resultMap type="EBill" id="getEbillListRes">
+        <result column="jnlno" property="jnlno" javaType="int"/>
+        <result column="userid" property="userId"/>
+        <result column="title" property="title"/>
+        <result column="iotype" property="ioType"/>
+        <result column="paytype" property="payType"/>
+        <result column="amount" property="amount"/>
+        <result column="content" property="content"/>
+        <result column="transdate" property="transDate"/>
+        <result column="recorddate" property="recordDate"/>
+        <result column="createtime" property="createTime"/>
+        <result column="updatetime" property="updateTime"/>
+    </resultMap>
+    <select id="getEbillList" resultMap="getEbillListRes">
+        select * from ebill where userid=#{userId}
+        <!-- 		<where> -->
+        <!-- 			<if test="title != null and title != ''"> -->
+        <!-- 				title LIKE -->
+        <!-- 				CONCAT('%',#{title},'%') -->
+        <!-- 			</if> -->
+        <!-- 			<if test="beginDate != null and beginDate != ''"> -->
+        <!-- 				<![CDATA[ transdate>=#{beginDate} ]]> -->
+        <!-- 			</if> -->
+        <!-- 			<if test="endDate != null and endDate != ''"> -->
+        <!-- 				<![CDATA[ transdate<=#{endDate} ]]> -->
+        <!-- 			</if> -->
+        <!-- 			<if test="minAmount != null and minAmount != ''"> -->
+        <!-- 				<![CDATA[ amount>=#{minAmount} ]]> -->
+        <!-- 			</if> -->
+        <!-- 			<if test="maxAmount != null and maxAmount != ''"> -->
+        <!-- 				<![CDATA[ amount<=#{maxAmount} ]]> -->
+        <!-- 			</if> -->
+        <!-- 			<if test="iotype != null and iotype != ''"> -->
+        <!-- 				iotype=#{ioType} -->
+        <!-- 			</if> -->
+        <!-- 			<if test="paytype != null and paytype != ''"> -->
+        <!-- 				paytype=#{payType} -->
+        <!-- 			</if> -->
+        <!-- 		</where> -->
+        <!-- 		<if test="orderType!=null and orderType!=''"> -->
+        <!-- 			<choose> -->
+        <!-- 				<when test="orderType=='d1'"> -->
+        <!-- 					order by transdate -->
+        <!-- 				</when> -->
+        <!-- 				<when test="orderType=='d2'"> -->
+        <!-- 					order by transdate desc -->
+        <!-- 				</when> -->
+        <!-- 				<when test="orderType=='a1'"> -->
+        <!-- 					order by amount -->
+        <!-- 				</when> -->
+        <!-- 				<when test="orderType=='a2'"> -->
+        <!-- 					order by amount desc -->
+        <!-- 				</when> -->
+        <!-- 			</choose> -->
+        <!-- 		</if> -->
+    </select>
+</mapper>

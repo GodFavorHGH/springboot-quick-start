@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dip.mapper.EUserMapper">
-	
-	<parameterMap id="registerEUserMap" type="Map">
+
+    <parameterMap id="registerEUserMap" type="Map">
         <parameter property="phone"/>
         <parameter property="password"/>
         <parameter property="idNo"/>
@@ -12,19 +12,19 @@
         <parameter property="createTime"/>
         <parameter property="updateTime"/>
         <parameter property="status"/>
-	</parameterMap>
-	<insert id="registerEUser" parameterMap="registerEUserMap">
+    </parameterMap>
+    <insert id="registerEUser" parameterMap="registerEUserMap">
         insert into euser
-        	(name, password, phone, idno, idtype) 
-       	values 
-        	(#{name}, #{password}, #{phone}, #{idNo}, #{idType})
+        (name, password, phone, idno, idtype)
+        values
+        (#{name}, #{password}, #{phone}, #{idNo}, #{idType})
     </insert>
-	
-<!-- 	<select id="getEUserByLoginInfo" parameterType="Map" resultMap="getEUserByLoginInfoRes"> -->
-<!--         select * from euser -->
-<!--         where userid = #{loginId} -->
-<!--         and password=#{password} -->
-<!--     </select> -->
+
+    <!-- 	<select id="getEUserByLoginInfo" parameterType="Map" resultMap="getEUserByLoginInfoRes"> -->
+    <!--         select * from euser -->
+    <!--         where userid = #{loginId} -->
+    <!--         and password=#{password} -->
+    <!--     </select> -->
     <!-- 通过<resultMap>映射实体类属性名和表的字段名对应关系 -->
     <resultMap id="listAllEUserRes" type="EUser">
         <id column="id" property="id" javaType="int"/>
@@ -37,51 +37,51 @@
         <result column="updatetime" property="updateTime"/>
         <result column="status" property="status"/>
     </resultMap>
-    
+
     <select id="listAllEUser" parameterType="Map" resultMap="listAllEUserRes">
         select * from euser
         <where>
-			<if test="name != null and name != ''">
-				name LIKE
-				CONCAT('%',#{name},'%')
-			</if>
-			<if test="phone != null and phone != ''">
-				phone=#{phone}
-			</if>
-			<if test="idNo != null and idNo != ''">
-				idno=#{idNo}
-			</if>
-			<if test="id != null and id != ''">
-				id=#{id}
-			</if>
-		</where>
+            <if test="name != null and name != ''">
+                name LIKE
+                CONCAT('%',#{name},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone}
+            </if>
+            <if test="idNo != null and idNo != ''">
+                idno=#{idNo}
+            </if>
+            <if test="id != null and id != ''">
+                id=#{id}
+            </if>
+        </where>
     </select>
-    
+
     <update id="updateEUser" parameterType="Map">
-    	update euser set
-	   		<if test="name != null and name != ''">
-				name=#{name},
-			</if>
-			<if test="phone != null and phone != ''">
-				phone=#{phone},
-			</if>
-			<if test="password != null and password != ''">
-				password=#{password},
-			</if>
-			<if test="idNo != null and idNo != ''">
-				idno=#{idNo},
-			</if>
-			<if test="idType != null and idType != ''">
-				idtype=#{idType},
-			</if>
-			<if test="updateTime != null and updateTime != ''">
-				updatetime=#{updateTime}
-			</if>
-			where id=#{id}
+        update euser set
+        <if test="name != null and name != ''">
+            name=#{name},
+        </if>
+        <if test="phone != null and phone != ''">
+            phone=#{phone},
+        </if>
+        <if test="password != null and password != ''">
+            password=#{password},
+        </if>
+        <if test="idNo != null and idNo != ''">
+            idno=#{idNo},
+        </if>
+        <if test="idType != null and idType != ''">
+            idtype=#{idType},
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            updatetime=#{updateTime}
+        </if>
+        where id=#{id}
     </update>
-    
+
     <resultMap type="EUser" id="getEUserInfoWithAccountRes">
-    	<id column="id" property="id" javaType="int"/>
+        <id column="id" property="id" javaType="int"/>
         <result column="name" property="name"/>
         <result column="phone" property="phone"/>
         <result column="password" property="password"/>
@@ -91,19 +91,25 @@
         <result column="updatetime" property="updateTime"/>
         <result column="status" property="status"/>
         <collection property="acList" ofType="Account" column="id">
-        	<id column="id" property="id" javaType="int"/>
-        	<id column="userid" property="userId" javaType="int"/>
-	        <result column="acNo" property="acNo"/>
-	        <result column="acname" property="acName"/>
-	        <result column="actype" property="acType"/>
-	        <result column="acstate" property="acState"/>
+            <id column="id" property="id" javaType="int"/>
+            <id column="userid" property="userId" javaType="int"/>
+            <result column="acNo" property="acNo"/>
+            <result column="acname" property="acName"/>
+            <result column="actype" property="acType"/>
+            <result column="acstate" property="acState"/>
         </collection>
     </resultMap>
-    
+
     <select id="getEUserInfoWithAccount" resultMap="getEUserInfoWithAccountRes" parameterType="int">
-    	select a.*,b.* 
-    	from euser a,eaccount b 
-    	where a.id=b.userid and a.id=#{id}
+        select a.*,b.*
+        from euser a,eaccount b
+        where a.id=b.userid and a.id=#{id}
     </select>
-    
+
+    <select id="getEUserByLoginInfo" resultMap="getEUserInfoWithAccountRes" parameterType="Map">
+        select a.*,b.*
+        from euser a,eaccount b
+        where a.id=b.userid and a.phone=#{phone} and a.password=#{password}
+    </select>
+
 </mapper>
