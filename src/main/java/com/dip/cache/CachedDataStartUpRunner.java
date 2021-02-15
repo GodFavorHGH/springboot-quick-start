@@ -18,7 +18,7 @@ import com.dip.service.SystemCachedDataService;
  *
  */
 @Component
-@SuppressWarnings({"rawtypes", "unchecked", "unused"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class CachedDataStartUpRunner implements CommandLineRunner{
 
 	@Autowired
